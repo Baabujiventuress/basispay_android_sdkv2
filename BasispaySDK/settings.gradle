@@ -1,0 +1,3 @@
+rootProject.name = "BasispaySDK"
+include ':app'
+include ':basispaypg'
