@@ -1,9 +1,10 @@
 package com.basispaysdk;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.basispaypg.PGConstants;
 import com.basispaypg.PaymentGatewayPaymentInitializer;
 import com.basispaypg.PaymentParams;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PGConstants.REQUEST_CODE) {
