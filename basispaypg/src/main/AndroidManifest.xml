@@ -9,6 +9,8 @@
         <activity
             android:name=".PaymentGatewayPaymentActivity"
             android:label="@string/title_activity_payment"
+            android:usesCleartextTraffic="true"
+            android:requestLegacyExternalStorage="true"
             android:theme="@style/Theme.BasispaySDK"/>
     </application>
 
