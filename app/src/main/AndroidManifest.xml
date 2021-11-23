@@ -14,8 +14,7 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.BasispaySDK">
-        <activity android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

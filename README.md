@@ -11,23 +11,6 @@ Make sure you have the below permissions in your manifest file:
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 ```
-AndroidManifest.xml 
-```
-
-<?xml version="1.0" encoding="utf-8"?>
-<manifest ...>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application
-        ...
-        android:usesCleartextTraffic="true"
-	android:requestLegacyExternalStorage="true"
-        ...>
-        ...
-    </application>
-</manifest>
-
-```
-
 import com.basispaypg.PGConstants;
 import com.basispaypg.PaymentGatewayPaymentInitializer;
 import com.basispaypg.PaymentParams;
@@ -63,20 +46,27 @@ To receive the json response, override the onActivityResult() using the REQUEST_
 ```
 @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-          if (requestCode == PGConstants.REQUEST_CODE) {
+        if (requestCode == PGConstants.REQUEST_CODE) {
             if(resultCode == Activity.RESULT_OK){
-                String paymentResponse=data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
-                System.out.println("paymentResponse: "+paymentResponse);
-                if(paymentResponse.equals("null")){
-                    System.out.println("Transaction Error!");
-                }else{
-                    System.out.println("Transaction Completed!");
+                try{
+                    String paymentResponse=data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
+                    System.out.println("paymentResponse: "+paymentResponse);
+                    if(paymentResponse.equals("null")){
+                        System.out.println("Transaction Error!");
+                        transactionIdView.setText("Transaction ID: NIL");
+                        transactionStatusView.setText("Transaction Status: Transaction Error!");
+                    }else{
+                        JSONObject response = new JSONObject(paymentResponse);
+                        transactionIdView.setText("Transaction ID: "+response.getString("transaction_id"));
+                        transactionStatusView.setText("Transaction Status: "+response.getString("response_message"));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                    System.out.println("Transaction Canceled!!");
+                //Write your code if there's no result
             }
-
         }
     }
 

@@ -1,11 +1,13 @@
 package com.basispaypg;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -13,8 +15,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,7 +28,6 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
     public PaymentGatewayPaymentActivity() {
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_payment);
@@ -59,7 +58,7 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
                 public void onPageStarted(WebView view, String url, Bitmap facIcon) {
                     super.onPageStarted(view, url, facIcon);
                     pb.setVisibility(0);
-                    Log.i("log", "onageStarted : " + url);
+                    Log.i("log", "onPageStarted : " + url);
                 }
             });
             WebSettings webSettings = this.webview.getSettings();
@@ -72,17 +71,15 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
                     return super.onJsAlert(view, url, message, result);
                 }
             });
-             String postUrl = "https://staging-connect.basispay.in/checkout";
-             Log.d("postParamValues", postPaymentRequestParams);
+            String postUrl = "https://staging-connect.basispay.in/checkout";
+            Log.d("postParamValues", postPaymentRequestParams);
             this.webview.postUrl(postUrl, postPaymentRequestParams.getBytes());
-
         } catch (Exception var7) {
             StringWriter sw = new StringWriter();
             var7.printStackTrace(new PrintWriter(sw));
             String exceptionAsString = sw.toString();
             Toast.makeText(this.getBaseContext(), exceptionAsString, 0).show();
         }
-
 
     }
 
@@ -112,6 +109,35 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
 
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public class MyJavaScriptInterface {
+        Context mContext;
+
+        MyJavaScriptInterface(Context c) {
+            this.mContext = c;
+        }
+
+        @JavascriptInterface
+        public void showHTML(String html, String url) {
+            Log.i("log", "showHTML : " + url + " : " + html);
+        }
+
+        @JavascriptInterface
+        public void paymentResponse(String jsonStringResponse) {
+            try {
+                Log.d("", "ResponseJson: " + jsonStringResponse);
+                if (!jsonStringResponse.equals("null") && !jsonStringResponse.isEmpty() && jsonStringResponse.contains("transaction_id")) {
+                    Intent data = new Intent();
+                    data.putExtra(PGConstants.PAYMENT_RESPONSE, jsonStringResponse);
+                    PaymentGatewayPaymentActivity.this.setResult(-1, data);
+                    PaymentGatewayPaymentActivity.this.finish();
+                }
+            } catch (Exception var3) {
+                var3.printStackTrace();
+            }
+
         }
     }
 }
