@@ -1,13 +1,11 @@
 package com.basispaypg;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -52,7 +50,7 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
                                 PaymentGatewayPaymentActivity.this.finish();
                             }
                         }
-                    }, 8000);
+                    }, 10000);
                 }
 
                 public void onPageStarted(WebView view, String url, Bitmap facIcon) {
@@ -112,32 +110,4 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
         }
     }
 
-    public class MyJavaScriptInterface {
-        Context mContext;
-
-        MyJavaScriptInterface(Context c) {
-            this.mContext = c;
-        }
-
-        @JavascriptInterface
-        public void showHTML(String html, String url) {
-            Log.i("log", "showHTML : " + url + " : " + html);
-        }
-
-        @JavascriptInterface
-        public void paymentResponse(String jsonStringResponse) {
-            try {
-                Log.d("", "ResponseJson: " + jsonStringResponse);
-                if (!jsonStringResponse.equals("null") && !jsonStringResponse.isEmpty() && jsonStringResponse.contains("transaction_id")) {
-                    Intent data = new Intent();
-                    data.putExtra(PGConstants.PAYMENT_RESPONSE, jsonStringResponse);
-                    PaymentGatewayPaymentActivity.this.setResult(-1, data);
-                    PaymentGatewayPaymentActivity.this.finish();
-                }
-            } catch (Exception var3) {
-                var3.printStackTrace();
-            }
-
-        }
-    }
 }

@@ -17,15 +17,17 @@ import com.basispaypg.PaymentParams;
 
 ```
  PaymentParams pgPaymentParams = new PaymentParams();
-        pgPaymentParams.setOrderReference("XXXXX*");
-        pgPaymentParams.setCustomerName("XXXXX*");
-        pgPaymentParams.setCustomerEmail("XXXXX*");
-        pgPaymentParams.setCustomerMobile("XXXXX*");
-        pgPaymentParams.setAddress("XXXXX*");
-        pgPaymentParams.setPostalCode("XXXXX*");
-        pgPaymentParams.setCity("XXXXX*");
-        pgPaymentParams.setRegion("XXXXX*");
-        pgPaymentParams.setCountry("XXXXX*");
+        pgPaymentParams.setOrderReference("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerName("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
+        pgPaymentParams.setCustomerMobile("XXXXX");//required field(*)
+        pgPaymentParams.setAddress("XXXXX");//required field(*)
+        pgPaymentParams.setPostalCode("XXXXX");//required field(*)
+        pgPaymentParams.setCity("XXXXX");//required field(*)
+        pgPaymentParams.setRegion("XXXXX");//required field(*)
+        pgPaymentParams.setCountry("XXXXX");//required field(*)
+		
+        //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");
         pgPaymentParams.setDeliveryCustomerName("XXXXX");
         pgPaymentParams.setDeliveryCustomerMobile("XXXXX");
@@ -44,29 +46,22 @@ pgPaymentInitialzer.initiatePaymentProcess();
 ## Payment Response
 To receive the json response, override the onActivityResult() using the REQUEST_CODE and PAYMENT_RESPONSE variables from com.basispaypg.PaymentParams class
 ```
-@Override
+ @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PGConstants.REQUEST_CODE) {
             if(resultCode == Activity.RESULT_OK){
-                try{
-                    String paymentResponse=data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
-                    System.out.println("paymentResponse: "+paymentResponse);
-                    if(paymentResponse.equals("null")){
-                        System.out.println("Transaction Error!");
-                        transactionIdView.setText("Transaction ID: NIL");
-                        transactionStatusView.setText("Transaction Status: Transaction Error!");
-                    }else{
-                        JSONObject response = new JSONObject(paymentResponse);
-                        transactionIdView.setText("Transaction ID: "+response.getString("transaction_id"));
-                        transactionStatusView.setText("Transaction Status: "+response.getString("response_message"));
-                    }
-                }catch (JSONException e){
-                    e.printStackTrace();
+                String paymentResponse=data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
+                System.out.println("paymentResponse: "+paymentResponse);
+                if(paymentResponse.equals("null")){
+                    System.out.println("Transaction Error!");
+                }else{
+                    System.out.println("Transaction Completed!");
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                System.out.println("Transaction Canceled!!");
             }
+
         }
     }
 

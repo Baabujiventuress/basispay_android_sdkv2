@@ -19,16 +19,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         PaymentParams pgPaymentParams = new PaymentParams();
-        pgPaymentParams.setOrderReference("0Ea4n_fHa-RDL_vIOcJ5Dw==");
-        pgPaymentParams.setCustomerName("XYXYXY");
-        pgPaymentParams.setCustomerEmail("YXYXYX@gmail.com");
-        pgPaymentParams.setCustomerMobile("9876543210");
-        pgPaymentParams.setAddress("ZZZZZZXXXXXXX");
-        pgPaymentParams.setPostalCode("ZZZXXX");
-        pgPaymentParams.setCity("XXXXX");
-        pgPaymentParams.setRegion("YYYYYY");
-        pgPaymentParams.setCountry("ZZZZZZ");
+        pgPaymentParams.setOrderReference("u8Qe0BWHjg5O8MCgFieQcw==");//required field(*)
+        pgPaymentParams.setCustomerName("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
+        pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
+        pgPaymentParams.setAddress("XXXXX");//required field(*)
+        pgPaymentParams.setPostalCode("XXXXX");//required field(*)
+        pgPaymentParams.setCity("XXXXX");//required field(*)
+        pgPaymentParams.setRegion("XXXXX");//required field(*)
+        pgPaymentParams.setCountry("XXXXX");//required field(*)
+        //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");
         pgPaymentParams.setDeliveryCustomerName("XXXXX");
         pgPaymentParams.setDeliveryCustomerMobile("9876543210");
