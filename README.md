@@ -72,7 +72,8 @@ To receive the json response, override the onActivityResult() using the REQUEST_
                 if(paymentResponse.equals("null")){
                     System.out.println("Transaction Error!");
                 }else{
-                    System.out.println("Transaction Completed!");
+                    //Completed or Failure
+                    System.out.println("Payment Completed/Failure");
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {

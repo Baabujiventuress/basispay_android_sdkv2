@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PaymentParams pgPaymentParams = new PaymentParams();
-        pgPaymentParams.setOrderReference("u8Qe0BWHjg5O8MCgFieQcw==");//required field(*)
+        pgPaymentParams.setOrderReference("5d4KXXEVTwzV4xpKJ2qvQw==");//required field(*)
         pgPaymentParams.setCustomerName("XXXXX");//required field(*)
         pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
         pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         pgPaymentParams.setCity("XXXXX");//required field(*)
         pgPaymentParams.setRegion("XXXXX");//required field(*)
         pgPaymentParams.setCountry("XXXXX");//required field(*)
+
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");
         pgPaymentParams.setDeliveryCustomerName("XXXXX");
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 if(paymentResponse.equals("null")){
                     System.out.println("Transaction Error!");
                 }else{
-                    System.out.println("Transaction Completed!");
+                    //Completed or Failure
+                    System.out.println("Payment Completed/Failure");
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {

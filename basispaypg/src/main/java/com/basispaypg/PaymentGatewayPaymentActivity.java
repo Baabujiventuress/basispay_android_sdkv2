@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -22,6 +24,7 @@ import java.util.TimerTask;
 public class PaymentGatewayPaymentActivity extends AppCompatActivity {
     ProgressBar pb;
     WebView webview;
+    AppCompatButton button_close;
 
     public PaymentGatewayPaymentActivity() {
     }
@@ -31,6 +34,7 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_payment);
         this.webview = (WebView)this.findViewById(R.id.pgPaymentGatewayWebview);
         this.pb = (ProgressBar)this.findViewById(R.id.progressBar);
+        button_close = (AppCompatButton)this.findViewById(R.id.button_close);
         this.pb.setVisibility(0);
         String postPaymentRequestParams = this.getIntent().getStringExtra(PGConstants.POST_PARAMS);
 
@@ -40,17 +44,18 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
                     super.onPageFinished(view, url);
                     pb.setVisibility(8);
                     Log.i("log", "onPageFinished : " + url);
-                    new Timer().schedule(new TimerTask() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if(url.equals("https://staging-demo.basispay.in/response.php")){
-                                Intent data = new Intent();
-                                data.putExtra(PGConstants.PAYMENT_RESPONSE, "Completed");
-                                PaymentGatewayPaymentActivity.this.setResult(-1, data);
-                                PaymentGatewayPaymentActivity.this.finish();
+                                button_close.setVisibility(View.VISIBLE);
+                            }else {
+                                button_close.setVisibility(View.GONE);
                             }
+
                         }
-                    }, 10000);
+                    });
+
                 }
 
                 public void onPageStarted(WebView view, String url, Bitmap facIcon) {
@@ -78,6 +83,16 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
             String exceptionAsString = sw.toString();
             Toast.makeText(this.getBaseContext(), exceptionAsString, 0).show();
         }
+
+        button_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent();
+                data.putExtra(PGConstants.PAYMENT_RESPONSE, "Success");
+                PaymentGatewayPaymentActivity.this.setResult(-1, data);
+                PaymentGatewayPaymentActivity.this.finish();
+            }
+        });
 
     }
 
