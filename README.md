@@ -4,6 +4,23 @@ BasisPay Android Payment Gateway kit for developers
 ## INTRODUCTION
 This document describes the steps for integrating Basispay online payment gateway Android kit.This payment gateway performs the online payment transactions with less user effort. It receives the payment details as input and handles the payment flow. Finally returns the payment response to the user. User has to import the framework manually into their project for using it
 
+## Add the JitPack repository to your build file
+Step 1. Add the JitPack repository to your build file
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+Step 2. Add the dependency
+```
+dependencies {
+	        implementation 'com.github.Baabujiventuress:basispay_android_sdkv2:Tag'
+	}
+```
+
 ## Code Explanation
 
 Make sure you have the below permissions in your manifest file:
