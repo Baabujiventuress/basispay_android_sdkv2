@@ -34,6 +34,8 @@ import com.basispaypg.PaymentParams;
 
 ```
  PaymentParams pgPaymentParams = new PaymentParams();
+        pgPaymentParams.setApiKey("XXXXX");//required field(*)
+	pgPaymentParams.setSecureHash("XXXXX");//required field(*)
         pgPaymentParams.setOrderReference("XXXXX");//required field(*)
         pgPaymentParams.setCustomerName("XXXXX");//required field(*)
         pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)

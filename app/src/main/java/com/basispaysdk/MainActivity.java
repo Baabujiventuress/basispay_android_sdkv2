@@ -21,15 +21,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PaymentParams pgPaymentParams = new PaymentParams();
-        pgPaymentParams.setOrderReference("5d4KXXEVTwzV4xpKJ2qvQw==");//required field(*)
-        pgPaymentParams.setCustomerName("XXXXX");//required field(*)
-        pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
+        pgPaymentParams.setApiKey("0a12de78-c50b-46d6-96cf-ac42333ad0c5");//required field(*)
+        pgPaymentParams.setSecureHash("svE0NWLXIpuoU5NC2isBAHTbP4T9N2ZiNg4RA5JG+L8=");//required field(*)
+        pgPaymentParams.setOrderReference("-Pzj-65vLbUQAEiynISHUw==");//required field(*)
+        pgPaymentParams.setCustomerName("Basispay");//required field(*)
+        pgPaymentParams.setCustomerEmail("Basispay@gmail.com");//required field(*)
         pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
-        pgPaymentParams.setAddress("XXXXX");//required field(*)
-        pgPaymentParams.setPostalCode("XXXXX");//required field(*)
-        pgPaymentParams.setCity("XXXXX");//required field(*)
-        pgPaymentParams.setRegion("XXXXX");//required field(*)
-        pgPaymentParams.setCountry("XXXXX");//required field(*)
+        pgPaymentParams.setAddress("New # 9, Old # 11, 1st Floor, Palayakaran Street, Kalaimagal Nagar, Ekkatuthangal, Chennai, Tamil Nadu 600032");//required field(*)
+        pgPaymentParams.setPostalCode("6000021");//required field(*)
+        pgPaymentParams.setCity("Chennai");//required field(*)
+        pgPaymentParams.setRegion("IN");//required field(*)
+        pgPaymentParams.setCountry("India");//required field(*)
 
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");

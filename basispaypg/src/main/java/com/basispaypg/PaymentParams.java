@@ -3,6 +3,8 @@ package com.basispaypg;
 
 public class PaymentParams {
 
+    private String apiKey ;
+    private String secureHash ;
     private String orderReference;
     private String customerName;
     private String customerEmail;
@@ -23,6 +25,22 @@ public class PaymentParams {
 
 
     public PaymentParams() {
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getSecureHash() {
+        return secureHash;
+    }
+
+    public void setSecureHash(String secureHash) {
+        this.secureHash = secureHash;
     }
 
     public String getOrderReference() {
@@ -152,5 +170,6 @@ public class PaymentParams {
     public void setDeliveryCountry(String deliveryCountry) {
         this.deliveryCountry = deliveryCountry;
     }
+
 }
 

@@ -18,80 +18,90 @@ public class PaymentGatewayPaymentInitializer {
 
     public PaymentGatewayPaymentInitializer(PaymentParams paymentParams, Activity context) {
         this.context = context;
-        if (TextUtils.isEmpty(paymentParams.getOrderReference())) {
-            throw new RuntimeException("Order Reference missing");
-        } else {
-            this.params.put("orderReference", paymentParams.getOrderReference());
-            if (TextUtils.isEmpty(paymentParams.getCustomerName())) {
-                throw new RuntimeException("Customer Name missing");
-            } else {
-                this.params.put("customerName", paymentParams.getCustomerName());
-                    if (TextUtils.isEmpty(paymentParams.getCustomerEmail())) {
-                        throw new RuntimeException("customer Email missing");
+
+        if (TextUtils.isEmpty(paymentParams.getApiKey())) {
+            throw new RuntimeException("ApiKey missing");
+        }else {
+            this.params.put("apiKey", paymentParams.getApiKey());
+            if (TextUtils.isEmpty(paymentParams.getSecureHash())) {
+                throw new RuntimeException("SecureHash missing");
+            }else {
+                this.params.put("secureHash", paymentParams.getSecureHash());
+                if (TextUtils.isEmpty(paymentParams.getOrderReference())) {
+                    throw new RuntimeException("Order Reference missing");
+                } else {
+                    this.params.put("orderReference", paymentParams.getOrderReference());
+                    if (TextUtils.isEmpty(paymentParams.getCustomerName())) {
+                        throw new RuntimeException("Customer Name missing");
                     } else {
-                        this.params.put("customerEmail", paymentParams.getCustomerEmail());
-                        if (TextUtils.isEmpty(paymentParams.getCustomerMobile())) {
-                            throw new RuntimeException("customerMobile missing");
+                        this.params.put("customerName", paymentParams.getCustomerName());
+                        if (TextUtils.isEmpty(paymentParams.getCustomerEmail())) {
+                            throw new RuntimeException("customer Email missing");
                         } else {
-                            this.params.put("customerMobile", paymentParams.getCustomerMobile());
-                            if (TextUtils.isEmpty(paymentParams.getAddress())) {
-                                throw new RuntimeException("address missing");
+                            this.params.put("customerEmail", paymentParams.getCustomerEmail());
+                            if (TextUtils.isEmpty(paymentParams.getCustomerMobile())) {
+                                throw new RuntimeException("customerMobile missing");
                             } else {
-                                this.params.put("address", paymentParams.getAddress());
-                                if (TextUtils.isEmpty(paymentParams.getPostalCode())) {
-                                    throw new RuntimeException("postalCode missing");
+                                this.params.put("customerMobile", paymentParams.getCustomerMobile());
+                                if (TextUtils.isEmpty(paymentParams.getAddress())) {
+                                    throw new RuntimeException("address missing");
                                 } else {
-                                    this.params.put("postalCode", paymentParams.getPostalCode());
-                                    if (TextUtils.isEmpty(paymentParams.getCity())) {
-                                        throw new RuntimeException("city missing");
+                                    this.params.put("address", paymentParams.getAddress());
+                                    if (TextUtils.isEmpty(paymentParams.getPostalCode())) {
+                                        throw new RuntimeException("postalCode missing");
                                     } else {
-                                        this.params.put("city", paymentParams.getCity());
-                                        if (TextUtils.isEmpty(paymentParams.getRegion())) {
-                                            throw new RuntimeException("region missing");
+                                        this.params.put("postalCode", paymentParams.getPostalCode());
+                                        if (TextUtils.isEmpty(paymentParams.getCity())) {
+                                            throw new RuntimeException("city missing");
                                         } else {
-                                            this.params.put("region", paymentParams.getRegion());
-                                            if (TextUtils.isEmpty(paymentParams.getCity())) {
-                                                throw new RuntimeException("City missing");
+                                            this.params.put("city", paymentParams.getCity());
+                                            if (TextUtils.isEmpty(paymentParams.getRegion())) {
+                                                throw new RuntimeException("region missing");
                                             } else {
-                                                this.params.put("city", paymentParams.getCity());
-                                                if (TextUtils.isEmpty(paymentParams.getCountry())) {
-                                                    throw new RuntimeException("country missing");
+                                                this.params.put("region", paymentParams.getRegion());
+                                                if (TextUtils.isEmpty(paymentParams.getCity())) {
+                                                    throw new RuntimeException("City missing");
                                                 } else {
-                                                    this.params.put("country", paymentParams.getCountry());
-                                                    if (paymentParams.getDeliveryAddress() != null) {
-                                                        this.params.put("delivery[address]", paymentParams.getDeliveryAddress());
-                                                        if (paymentParams.getDeliveryCustomerName() != null) {
-                                                            this.params.put("delivery[customerName]", paymentParams.getDeliveryCustomerName());
-                                                            if (paymentParams.getDeliveryCustomerMobile() != null) {
-                                                                this.params.put("delivery[customerMobile]", paymentParams.getDeliveryCustomerMobile());
-                                                                if (paymentParams.getDeliveryPostalCode() != null) {
-                                                                    this.params.put("delivery[postalCode]", paymentParams.getDeliveryPostalCode());
-                                                                    if (paymentParams.getDeliveryCity() != null) {
-                                                                        this.params.put("delivery[city]", paymentParams.getDeliveryCity());
-                                                                        if (paymentParams.getDeliveryRegion() != null) {
-                                                                            this.params.put("delivery[region]", paymentParams.getDeliveryRegion());
-                                                                            if (paymentParams.getDeliveryCountry() != null) {
-                                                                                this.params.put("delivery[country]", paymentParams.getDeliveryCountry());
+                                                    this.params.put("city", paymentParams.getCity());
+                                                    if (TextUtils.isEmpty(paymentParams.getCountry())) {
+                                                        throw new RuntimeException("country missing");
+                                                    } else {
+                                                        this.params.put("country", paymentParams.getCountry());
+                                                        if (paymentParams.getDeliveryAddress() != null) {
+                                                            this.params.put("delivery[address]", paymentParams.getDeliveryAddress());
+                                                            if (paymentParams.getDeliveryCustomerName() != null) {
+                                                                this.params.put("delivery[customerName]", paymentParams.getDeliveryCustomerName());
+                                                                if (paymentParams.getDeliveryCustomerMobile() != null) {
+                                                                    this.params.put("delivery[customerMobile]", paymentParams.getDeliveryCustomerMobile());
+                                                                    if (paymentParams.getDeliveryPostalCode() != null) {
+                                                                        this.params.put("delivery[postalCode]", paymentParams.getDeliveryPostalCode());
+                                                                        if (paymentParams.getDeliveryCity() != null) {
+                                                                            this.params.put("delivery[city]", paymentParams.getDeliveryCity());
+                                                                            if (paymentParams.getDeliveryRegion() != null) {
+                                                                                this.params.put("delivery[region]", paymentParams.getDeliveryRegion());
+                                                                                if (paymentParams.getDeliveryCountry() != null) {
+                                                                                    this.params.put("delivery[country]", paymentParams.getDeliveryCountry());
+                                                                                } else {
+                                                                                    throw new RuntimeException("delivery country missing");
+                                                                                }
                                                                             } else {
-                                                                                throw new RuntimeException("delivery country missing");
+                                                                                throw new RuntimeException("delivery region missing");
                                                                             }
                                                                         } else {
-                                                                            throw new RuntimeException("delivery region missing");
+                                                                            throw new RuntimeException("delivery city missing");
                                                                         }
                                                                     } else {
-                                                                        throw new RuntimeException("delivery city missing");
+                                                                        throw new RuntimeException("delivery postalCode missing");
                                                                     }
+
                                                                 } else {
-                                                                    throw new RuntimeException("delivery postalCode missing");
+                                                                    throw new RuntimeException("delivery customerMobile missing");
                                                                 }
-
                                                             } else {
-                                                                throw new RuntimeException("delivery customerMobile missing");
+                                                                throw new RuntimeException("delivery customerName missing");
                                                             }
-                                                        } else {
-                                                            throw new RuntimeException("delivery customerName missing");
-                                                        }
 
+                                                        }
                                                     }
                                                 }
                                             }
@@ -100,11 +110,13 @@ public class PaymentGatewayPaymentInitializer {
                                 }
                             }
                         }
+
                     }
 
+                }
             }
-
         }
+
     }
 
     public void initiatePaymentProcess() {
