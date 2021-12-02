@@ -3,11 +3,14 @@ package com.basispaysdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.basispaypg.PGConstants;
 import com.basispaypg.PaymentGatewayPaymentInitializer;
 import com.basispaypg.PaymentParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,15 +23,14 @@ public class MainActivity extends AppCompatActivity {
         PaymentParams pgPaymentParams = new PaymentParams();
         pgPaymentParams.setApiKey("0a12de78-c50b-46d6-96cf-ac42333ad0c5");//required field(*)
         pgPaymentParams.setSecureHash("svE0NWLXIpuoU5NC2isBAHTbP4T9N2ZiNg4RA5JG+L8=");//required field(*)
-        pgPaymentParams.setOrderReference("tvjygAX1eEQ6qchiOoCc5w==");//required field(*)
-        pgPaymentParams.setCustomerName("Basispay");//required field(*)
-        pgPaymentParams.setCustomerEmail("Basispay@gmail.com");//required field(*)
+        pgPaymentParams.setCustomerName("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
         pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
-        pgPaymentParams.setAddress("New # 9, Old # 11, 1st Floor, Palayakaran Street, Kalaimagal Nagar, Ekkatuthangal, Chennai, Tamil Nadu 600032");//required field(*)
-        pgPaymentParams.setPostalCode("6000021");//required field(*)
-        pgPaymentParams.setCity("Chennai");//required field(*)
-        pgPaymentParams.setRegion("IN");//required field(*)
-        pgPaymentParams.setCountry("India");//required field(*)
+        pgPaymentParams.setAddress("XXXXX");//required field(*)
+        pgPaymentParams.setPostalCode("XXXXX");//required field(*)
+        pgPaymentParams.setCity("XXXXX");//required field(*)
+        pgPaymentParams.setRegion("XXXXX");//required field(*)
+        pgPaymentParams.setCountry("XXXXX");//required field(*)
 
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");

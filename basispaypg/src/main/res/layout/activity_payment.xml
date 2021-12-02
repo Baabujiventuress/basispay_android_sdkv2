@@ -19,19 +19,18 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/button_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="14dp"
         android:visibility="gone"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@android:color/holo_red_light"
         android:background="@android:color/transparent"
-        android:text="Done"
-        android:textStyle="bold"
+        android:text="Close"
         android:textAllCaps="false"
         android:textSize="14sp"
         android:layout_alignParentRight="true"
-        android:drawableLeft="@android:drawable/checkbox_on_background" />
+        android:drawableLeft="@android:drawable/ic_delete" />
 
 </RelativeLayout>
