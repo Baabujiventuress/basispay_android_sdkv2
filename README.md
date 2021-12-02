@@ -39,7 +39,7 @@ import com.basispaypg.PaymentParams;
         pgPaymentParams.setOrderReference("XXXXX");//required field(*)
         pgPaymentParams.setCustomerName("XXXXX");//required field(*)
         pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
-        pgPaymentParams.setCustomerMobile("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
         pgPaymentParams.setAddress("XXXXX");//required field(*)
         pgPaymentParams.setPostalCode("XXXXX");//required field(*)
         pgPaymentParams.setCity("XXXXX");//required field(*)
@@ -49,7 +49,7 @@ import com.basispaypg.PaymentParams;
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");
         pgPaymentParams.setDeliveryCustomerName("XXXXX");
-        pgPaymentParams.setDeliveryCustomerMobile("XXXXX");
+        pgPaymentParams.setDeliveryCustomerMobile("9876543210");
         pgPaymentParams.setDeliveryPostalCode("XXXXX");
         pgPaymentParams.setDeliveryCity("XXXXX");
         pgPaymentParams.setDeliveryRegion("XXXXX");
