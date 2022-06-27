@@ -68,19 +68,19 @@ public class PaymentGatewayPaymentInitializer {
                                                     } else {
                                                         this.params.put("country", paymentParams.getCountry());
                                                         if (paymentParams.getDeliveryAddress() != null) {
-                                                            this.params.put("delivery[address]", paymentParams.getDeliveryAddress());
+                                                            this.params.put("deliveryAddress", paymentParams.getDeliveryAddress());
                                                             if (paymentParams.getDeliveryCustomerName() != null) {
-                                                                this.params.put("delivery[customerName]", paymentParams.getDeliveryCustomerName());
+                                                                this.params.put("deliveryName", paymentParams.getDeliveryCustomerName());
                                                                 if (paymentParams.getDeliveryCustomerMobile() != null) {
-                                                                    this.params.put("delivery[customerMobile]", paymentParams.getDeliveryCustomerMobile());
+                                                                    this.params.put("deliveryMobile", paymentParams.getDeliveryCustomerMobile());
                                                                     if (paymentParams.getDeliveryPostalCode() != null) {
-                                                                        this.params.put("delivery[postalCode]", paymentParams.getDeliveryPostalCode());
+                                                                        this.params.put("deliveryPostalCode", paymentParams.getDeliveryPostalCode());
                                                                         if (paymentParams.getDeliveryCity() != null) {
-                                                                            this.params.put("delivery[city]", paymentParams.getDeliveryCity());
+                                                                            this.params.put("deliveryCity", paymentParams.getDeliveryCity());
                                                                             if (paymentParams.getDeliveryRegion() != null) {
-                                                                                this.params.put("delivery[region]", paymentParams.getDeliveryRegion());
+                                                                                this.params.put("deliveryRegion", paymentParams.getDeliveryRegion());
                                                                                 if (paymentParams.getDeliveryCountry() != null) {
-                                                                                    this.params.put("delivery[country]", paymentParams.getDeliveryCountry());
+                                                                                    this.params.put("deliveryCountry", paymentParams.getDeliveryCountry());
                                                                                 } else {
                                                                                     throw new RuntimeException("delivery country missing");
                                                                                 }

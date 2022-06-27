@@ -35,11 +35,11 @@ import com.basispaypg.PaymentParams;
 ```
  PaymentParams pgPaymentParams = new PaymentParams();
         pgPaymentParams.setApiKey("XXXXX");//required field(*)
-	pgPaymentParams.setSecureHash("XXXXX");//required field(*)
+	    pgPaymentParams.setSecureHash("XXXXX");//required field(*)
         pgPaymentParams.setOrderReference("XXXXX");//required field(*)
         pgPaymentParams.setCustomerName("XXXXX");//required field(*)
-        pgPaymentParams.setCustomerEmail("XXXXX@gmail.com");//required field(*)
-        pgPaymentParams.setCustomerMobile("9876543210");//required field(*)
+        pgPaymentParams.setCustomerEmail("XXXXX");//required field(*)
+        pgPaymentParams.setCustomerMobile("XXXXX");//required field(*)
         pgPaymentParams.setAddress("XXXXX");//required field(*)
         pgPaymentParams.setPostalCode("XXXXX");//required field(*)
         pgPaymentParams.setCity("XXXXX");//required field(*)
@@ -49,7 +49,7 @@ import com.basispaypg.PaymentParams;
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("XXXXX");
         pgPaymentParams.setDeliveryCustomerName("XXXXX");
-        pgPaymentParams.setDeliveryCustomerMobile("9876543210");
+        pgPaymentParams.setDeliveryCustomerMobile("XXXXX");
         pgPaymentParams.setDeliveryPostalCode("XXXXX");
         pgPaymentParams.setDeliveryCity("XXXXX");
         pgPaymentParams.setDeliveryRegion("XXXXX");
@@ -73,13 +73,30 @@ To receive the json response, override the onActivityResult() using the REQUEST_
                 System.out.println("paymentResponse: "+paymentResponse);
                 if(paymentResponse.equals("null")){
                     System.out.println("Transaction Error!");
+                    Toast.makeText(this,"Transaction Error!",Toast.LENGTH_SHORT).show();
                 }else{
-                    //Completed or Failure
-                    System.out.println("Payment Completed/Failure");
+                    System.out.println("Payment: "+paymentResponse);
+                    try {
+                        JSONObject jsonObject = new JSONObject(paymentResponse);
+                        if (jsonObject.getString("status").equals("success"))
+                        {
+                            System.out.println("Success");
+                            Toast.makeText(this,"Transaction Success",Toast.LENGTH_SHORT).show();
+                        }
+                        else if (jsonObject.getString("status").equals("failed"))
+                        {
+                            System.out.println("Failure");
+                            Toast.makeText(this,"Transaction Failed",Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 System.out.println("Transaction Canceled!!");
+                Toast.makeText(this,"Transaction Canceled!",Toast.LENGTH_SHORT).show();
             }
 
         }
