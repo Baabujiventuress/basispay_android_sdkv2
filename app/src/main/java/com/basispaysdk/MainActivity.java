@@ -3,7 +3,7 @@ package com.basispaysdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.basispaypg.PGConstants;
@@ -51,26 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PGConstants.REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK){
-                String paymentResponse=data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
-                System.out.println("paymentResponse: "+paymentResponse);
-                if(paymentResponse.equals("null")){
+            if (resultCode == Activity.RESULT_OK) {
+                String paymentResponse = data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
+                System.out.println("paymentResponse: " + paymentResponse);
+                if (paymentResponse.equals("null")) {
                     System.out.println("Transaction Error!");
-                    Toast.makeText(this,"Transaction Error!",Toast.LENGTH_SHORT).show();
-                }else{
-                    System.out.println("Payment: "+paymentResponse);
+                    Toast.makeText(this, "Transaction Error!", Toast.LENGTH_SHORT).show();
+                } else {
+                    System.out.println("Payment: " + paymentResponse);
                     try {
                         JSONObject jsonObject = new JSONObject(paymentResponse);
-                        if (jsonObject.getString("status").equals("success"))
-                        {
+                        if (jsonObject.getString("status").equals("success")) {
                             System.out.println("Success");
-                            Toast.makeText(this,"Transaction Success",Toast.LENGTH_SHORT).show();
-                        }
-                        else if (jsonObject.getString("status").equals("failed"))
-                        {
+                            Toast.makeText(this, "Transaction Success", Toast.LENGTH_SHORT).show();
+                        } else if (jsonObject.getString("status").equals("failed")) {
                             System.out.println("Failure");
-                            Toast.makeText(this,"Transaction Failed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 System.out.println("Transaction Canceled!!");
-                Toast.makeText(this,"Transaction Canceled!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Transaction Canceled!", Toast.LENGTH_SHORT).show();
             }
 
         }

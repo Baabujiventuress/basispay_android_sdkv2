@@ -2,12 +2,11 @@ package com.basispaypg;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -85,7 +84,7 @@ public class PaymentGatewayPaymentActivity extends AppCompatActivity {
             WebSettings webSettings = this.webview.getSettings();
             webSettings.setJavaScriptEnabled(true);
             this.webview.getSettings().setDomStorageEnabled(true);
-            this.webview.addJavascriptInterface(new PaymentGatewayPaymentActivity.MyJavaScriptInterface(this), "Android");
+            this.webview.addJavascriptInterface(new MyJavaScriptInterface((Activity)this), "Android");
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
             webSettings.setDomStorageEnabled(true);
             this.webview.clearHistory();
