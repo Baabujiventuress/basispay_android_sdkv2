@@ -1,7 +1,7 @@
 package com.basispaypg;
 
 
-public class PaymentParams {
+public class BasisPayPaymentParams {
 
     private String apiKey ;
     private String secureHash ;
@@ -24,7 +24,7 @@ public class PaymentParams {
     private String deliveryCountry;
 
 
-    public PaymentParams() {
+    public BasisPayPaymentParams() {
     }
 
     public String getApiKey() {
@@ -170,6 +170,5 @@ public class PaymentParams {
     public void setDeliveryCountry(String deliveryCountry) {
         this.deliveryCountry = deliveryCountry;
     }
-
 }
 

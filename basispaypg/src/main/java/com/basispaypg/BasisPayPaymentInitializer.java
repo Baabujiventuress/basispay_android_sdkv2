@@ -12,12 +12,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
-public class PaymentGatewayPaymentInitializer {
-    private Activity context = null;
-    private HashMap<String, String> params = new LinkedHashMap();
+public class BasisPayPaymentInitializer {
+    private final Activity context;
+    private final HashMap<String, String> params = new LinkedHashMap();
+    private final String returnUrl;
 
-    public PaymentGatewayPaymentInitializer(PaymentParams paymentParams, Activity context) {
+    public BasisPayPaymentInitializer(BasisPayPaymentParams paymentParams, Activity context, String returnUrl) {
         this.context = context;
+        this.returnUrl = returnUrl;
 
         if (TextUtils.isEmpty(paymentParams.getApiKey())) {
             throw new RuntimeException("ApiKey missing");
@@ -120,10 +122,11 @@ public class PaymentGatewayPaymentInitializer {
     }
 
     public void initiatePaymentProcess() {
-        Intent startActivity = new Intent(this.context, PaymentGatewayPaymentActivity.class);
-        startActivity.putExtra(PGConstants.POST_PARAMS, this.buildParamsForPayment());
-        startActivity.setFlags(8388608);
-        this.context.startActivityForResult(startActivity, PGConstants.REQUEST_CODE);
+        Intent startActivity = new Intent(this.context, BasisPayPaymentActivity.class);
+        startActivity.putExtra(BasisPayPGConstants.POST_PARAMS, this.buildParamsForPayment());
+        startActivity.putExtra(BasisPayPGConstants.PAYMENT_RETURN_URL, this.returnUrl);
+        startActivity.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        this.context.startActivityForResult(startActivity, BasisPayPGConstants.REQUEST_CODE);
     }
 
     private String buildParamsForPayment() {
@@ -145,7 +148,7 @@ public class PaymentGatewayPaymentInitializer {
             StringWriter sw = new StringWriter();
             var6.printStackTrace(new PrintWriter(sw));
             parameterEntry = sw.toString();
-            Toast.makeText(this.context, parameterEntry, 0).show();
+            Toast.makeText(this.context, parameterEntry, Toast.LENGTH_SHORT).show();
         }
 
         String postParams = hashPostParamsBuilder.toString();

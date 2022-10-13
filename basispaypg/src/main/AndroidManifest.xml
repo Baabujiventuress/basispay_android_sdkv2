@@ -7,7 +7,7 @@
 
     <application>
         <activity
-            android:name=".PaymentGatewayPaymentActivity"
+            android:name=".BasisPayPaymentActivity"
             android:label="@string/title_activity_payment"
             android:theme="@style/Theme.BasispaySDK"/>
     </application>

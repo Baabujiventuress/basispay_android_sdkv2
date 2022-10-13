@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.widget.Toast;
 
-import com.basispaypg.PGConstants;
-import com.basispaypg.PaymentGatewayPaymentInitializer;
-import com.basispaypg.PaymentParams;
+import com.basispaypg.BasisPayPGConstants;
+import com.basispaypg.BasisPayPaymentInitializer;
+import com.basispaypg.BasisPayPaymentParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,29 +23,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PaymentParams pgPaymentParams = new PaymentParams();
-        pgPaymentParams.setApiKey("XXXXX");//required field(*)
-        pgPaymentParams.setSecureHash("XXXXX");//required field(*)
-        pgPaymentParams.setOrderReference("XXXXX");//required field(*)
-        pgPaymentParams.setCustomerName("XXXXX");//required field(*)
-        pgPaymentParams.setCustomerEmail("XXXXX");//required field(*)
-        pgPaymentParams.setCustomerMobile("XXXXX");//required field(*)
-        pgPaymentParams.setAddress("XXXXX");//required field(*)
-        pgPaymentParams.setPostalCode("XXXXX");//required field(*)
-        pgPaymentParams.setCity("XXXXX");//required field(*)
-        pgPaymentParams.setRegion("XXXXX");//required field(*)
-        pgPaymentParams.setCountry("XXX");//required field(*)
+        BasisPayPaymentParams pgPaymentParams = new BasisPayPaymentParams();
+        pgPaymentParams.setApiKey(Const.PG_API_KEY);//required field(*)
+        pgPaymentParams.setSecureHash(Const.PG_SECURE_HASH);//required field(*)
+        pgPaymentParams.setOrderReference(Const.PG_REFERENCE);//required field(*)
+        pgPaymentParams.setCustomerName(Const.PG_USER_NAME);//required field(*)
+        pgPaymentParams.setCustomerEmail(Const.PG_USER_EMAIL);//required field(*)
+        pgPaymentParams.setCustomerMobile(Const.PG_USER_MOBILE);//required field(*)
+        pgPaymentParams.setAddress(Const.PG_ADDRESS);//required field(*)
+        pgPaymentParams.setPostalCode(Const.PG_PINCODE);//required field(*)
+        pgPaymentParams.setCity(Const.PG_CITY);//required field(*)
+        pgPaymentParams.setRegion(Const.PG_REGION);//required field(*)
+        pgPaymentParams.setCountry(Const.PG_COUNTRY);//required field(*)
 
         //// optional parameters
-        pgPaymentParams.setDeliveryAddress("XXXXX");
-        pgPaymentParams.setDeliveryCustomerName("XXXXX");
-        pgPaymentParams.setDeliveryCustomerMobile("XXXXX");
-        pgPaymentParams.setDeliveryPostalCode("XXXXX");
-        pgPaymentParams.setDeliveryCity("XXXXX");
-        pgPaymentParams.setDeliveryRegion("XXXXX");
-        pgPaymentParams.setDeliveryCountry("XXX");
+        pgPaymentParams.setDeliveryAddress("");
+        pgPaymentParams.setDeliveryCustomerName("");
+        pgPaymentParams.setDeliveryCustomerMobile("");
+        pgPaymentParams.setDeliveryPostalCode("");
+        pgPaymentParams.setDeliveryCity("");
+        pgPaymentParams.setDeliveryRegion("");
+        pgPaymentParams.setDeliveryCountry(Const.PG_COUNTRY);
 
-        PaymentGatewayPaymentInitializer pgPaymentInitializer = new PaymentGatewayPaymentInitializer(pgPaymentParams,MainActivity.this);
+        BasisPayPaymentInitializer pgPaymentInitializer = new BasisPayPaymentInitializer(pgPaymentParams,MainActivity.this,
+                Const.PG_RETURN_URL);
         pgPaymentInitializer.initiatePaymentProcess();
 
 
@@ -52,41 +55,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PGConstants.REQUEST_CODE) {
+        if (requestCode == BasisPayPGConstants.REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String paymentResponse = data.getStringExtra(PGConstants.PAYMENT_RESPONSE);
-                System.out.println("paymentResponse: " + paymentResponse);
-                if (paymentResponse.equals("null")) {
-                    System.out.println("Transaction Error!");
-                    Toast.makeText(this, "Transaction Error!", Toast.LENGTH_SHORT).show();
-                } else {
-                    System.out.println("Payment: " + paymentResponse);
-                    try {
-                        JSONObject jsonObject = new JSONObject(paymentResponse);
-                        if (jsonObject.getString("status").equals("success")) {
-                            System.out.println("Success");
-                            Toast.makeText(this, "Transaction Success", Toast.LENGTH_SHORT).show();
-                        } else if (jsonObject.getString("status").equals("failed")) {
-                            System.out.println("Failure");
-                            Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                try {
+                    String paymentResponse = data.getStringExtra(BasisPayPGConstants.PAYMENT_RESPONSE);
+                    System.out.println(paymentResponse);
+                    Log.e("Res",paymentResponse);
+                    if (paymentResponse.equals("null")) {
+                        Toast.makeText(this, "Transaction Error!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        JSONObject response = new JSONObject(paymentResponse);
+                        Log.e("Res", response.toString());
+                        String status = response.getString("status");
+                        String referenceNo = response.getString("payment_response");
+                        boolean success = response.getBoolean("success");
+
                     }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                System.out.println("Transaction Canceled!!");
-                Toast.makeText(this, "Transaction Canceled!", Toast.LENGTH_SHORT).show();
+                //Write your code if there's no result
             }
 
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
     }
 }

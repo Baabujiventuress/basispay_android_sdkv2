@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
     buildToolsVersion '32.0.0'
 
     defaultConfig {
         applicationId "com.basispaysdk"
         minSdkVersion 16
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -30,7 +30,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation project(path: ':basispaypg')
     testImplementation 'junit:junit:4.13.2'
