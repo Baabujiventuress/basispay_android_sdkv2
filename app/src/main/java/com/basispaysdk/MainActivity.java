@@ -3,10 +3,10 @@ package com.basispaysdk;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.basispaypg.BasisPayPGConstants;
 import com.basispaypg.BasisPayPaymentInitializer;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         pgPaymentParams.setDeliveryCountry(Const.PG_COUNTRY);
 
         BasisPayPaymentInitializer pgPaymentInitializer = new BasisPayPaymentInitializer(pgPaymentParams,MainActivity.this,
-                Const.PG_RETURN_URL);
+                Const.PG_RETURN_URL,Const.PG_CONNECT_URL); //Example PG_CONNECT_URL = https://basispay.in/
         pgPaymentInitializer.initiatePaymentProcess();
 
 
@@ -66,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         JSONObject response = new JSONObject(paymentResponse);
                         Log.e("Res", response.toString());
-                        String status = response.getString("status");
-                        String referenceNo = response.getString("payment_response");
+                        String referenceNo = response.getString("referenceNumber");
                         boolean success = response.getBoolean("success");
 
                     }

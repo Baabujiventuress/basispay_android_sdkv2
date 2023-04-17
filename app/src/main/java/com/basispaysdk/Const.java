@@ -1,6 +1,7 @@
 package com.basispaysdk;
 
 public class Const {
+    public static String PG_CONNECT_URL = "YOUR_PG_CONNECT_URL";
     public static String PG_RETURN_URL = "YOUR_RETURN_URL";
     public static String PG_API_KEY = "YOUR_API_KEY";
     public static String PG_REFERENCE = "YOUR_REFERENCE";

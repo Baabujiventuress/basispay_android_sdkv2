@@ -1,17 +1,12 @@
 package com.basispaypg;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -19,6 +14,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +42,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
         this.pb.setVisibility(View.VISIBLE);
         String postPaymentRequestParams = this.getIntent().getStringExtra(BasisPayPGConstants.POST_PARAMS);
         String returnUrl = this.getIntent().getStringExtra(BasisPayPGConstants.PAYMENT_RETURN_URL);
-        System.out.println("ReturnUrl==="+returnUrl);
+        String paymentUrl = this.getIntent().getStringExtra(BasisPayPGConstants.PAYMENT_URL);
 
         try {
             this.webview.setWebViewClient(new WebViewClient() {
@@ -57,14 +54,12 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (url.contains("https://staging-connect.basispay.in/ui/response?")){
-                                String[] s = url.split("https://staging-connect.basispay.in/ui/response");
+                            if (url.contains(paymentUrl+BasisPayPGConstants.CONTAIN_CHECK)){
+                                String[] s = url.split(paymentUrl+BasisPayPGConstants.CONTAIN_RES);
                                 Map<String, String> mapValue = getQueryMap(s[1]);
-                                System.out.println(mapValue.get("?ref"));
-                                System.out.println(mapValue.get("success"));
+
                                 referenceNo = mapValue.get("?ref");
                                 success = mapValue.get("success");
-                                System.out.println("referenceNo=="+referenceNo);
                             }
 
                         }
@@ -82,8 +77,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                             JSONObject pgResponse = new JSONObject();
                             if (url.equalsIgnoreCase(returnUrl)){
                                 try {
-                                    pgResponse.put("status", "success");
-                                    pgResponse.put("payment_response", referenceNo);
+                                    pgResponse.put("referenceNumber", referenceNo);
                                     pgResponse.put("success", success);
                                     Intent paymentResponseCallBackIntent = new Intent();
                                     paymentResponseCallBackIntent.putExtra(BasisPayPGConstants.PAYMENT_RESPONSE, pgResponse.toString());
@@ -102,7 +96,6 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
             WebSettings webSettings = this.webview.getSettings();
             webSettings.setJavaScriptEnabled(true);
             this.webview.getSettings().setDomStorageEnabled(true);
-            this.webview.addJavascriptInterface(new MyJavaScriptInterface((Activity)this), "Android");
             webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
             webSettings.setDomStorageEnabled(true);
             this.webview.clearHistory();
@@ -112,8 +105,8 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                     return super.onJsAlert(view, url, message, result);
                 }
             });
-            String postUrl = "https://staging-connect.basispay.in/checkout";
-//            String postUrl = "https://connect.basispay.in/checkout";
+            String postUrl = paymentUrl+BasisPayPGConstants.END_POINT;
+            Log.d("postUrl", postUrl);
             Log.d("postParamValues", postPaymentRequestParams);
             this.webview.postUrl(postUrl, postPaymentRequestParams.getBytes());
         } catch (Exception var7) {
@@ -164,38 +157,5 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
             map.put(name, value);
         }
         return map;
-    }
-
-    public class MyJavaScriptInterface {
-        Activity mActivity;
-        public MyJavaScriptInterface(Activity activity) {
-            this.mActivity = activity;
-        }
-        @JavascriptInterface
-        public void showHTML(String html, String url) {
-            Log.i("log", "showHTML : " + url + " : " + html);
-        }
-
-        @JavascriptInterface
-        public void paymentResponse(String jsonStringResponse) {
-            try {
-                Log.d("TAG", "ResponseJson: " + jsonStringResponse);
-                JSONObject pgResponse = new JSONObject();
-                if (!TextUtils.isEmpty(jsonStringResponse) &&
-                        jsonStringResponse.contains("transaction_id")) {
-                    pgResponse.put("status", "success");
-                    pgResponse.put("payment_response", jsonStringResponse);
-                } else {
-                    pgResponse.put("status", "failed");
-                    pgResponse.put("error_message", "No payment response received !");
-                }
-                Intent paymentResponseCallBackIntent = new Intent();
-                paymentResponseCallBackIntent.putExtra(BasisPayPGConstants.PAYMENT_RESPONSE, pgResponse.toString());
-                BasisPayPaymentActivity.this.setResult(-1, paymentResponseCallBackIntent);
-                BasisPayPaymentActivity.this.finish();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 }

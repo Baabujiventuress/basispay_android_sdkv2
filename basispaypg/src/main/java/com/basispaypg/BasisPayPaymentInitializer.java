@@ -16,10 +16,13 @@ public class BasisPayPaymentInitializer {
     private final Activity context;
     private final HashMap<String, String> params = new LinkedHashMap();
     private final String returnUrl;
+    private final String paymentUrl;
 
-    public BasisPayPaymentInitializer(BasisPayPaymentParams paymentParams, Activity context, String returnUrl) {
+    public BasisPayPaymentInitializer(BasisPayPaymentParams paymentParams, Activity context,
+                                      String returnUrl, String payUrl) {
         this.context = context;
         this.returnUrl = returnUrl;
+        this.paymentUrl = payUrl;
 
         if (TextUtils.isEmpty(paymentParams.getApiKey())) {
             throw new RuntimeException("ApiKey missing");
@@ -124,6 +127,7 @@ public class BasisPayPaymentInitializer {
     public void initiatePaymentProcess() {
         Intent startActivity = new Intent(this.context, BasisPayPaymentActivity.class);
         startActivity.putExtra(BasisPayPGConstants.POST_PARAMS, this.buildParamsForPayment());
+        startActivity.putExtra(BasisPayPGConstants.PAYMENT_URL, this.paymentUrl);
         startActivity.putExtra(BasisPayPGConstants.PAYMENT_RETURN_URL, this.returnUrl);
         startActivity.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         this.context.startActivityForResult(startActivity, BasisPayPGConstants.REQUEST_CODE);

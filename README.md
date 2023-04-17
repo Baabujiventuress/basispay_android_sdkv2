@@ -2,12 +2,10 @@
 BasisPay Android Payment Gateway kit for developers
 
 ## INTRODUCTION
-This document describes the steps for integrating BasisPay online payment gateway Android kit.
-This payment gateway performs the online payment transactions with less user effort. 
-It receives the payment details as input and handles the payment flow. Finally returns the payment response to the user. User has to import the framework manually into their project for using it
+This document describes the steps for integrating Basispay online payment gateway Android kit.This payment gateway performs the online payment transactions with less user effort. It receives the payment details as input and handles the payment flow. Finally returns the payment response to the user. User has to import the framework manually into their project for using it
 
 ## Add the JitPack repository to your build file
-Step 1. Add the JitPack repository to your project build file or Settings.gradle
+Step 1. Add the JitPack repository to your build file
 ```
 allprojects {
 		repositories {
@@ -16,7 +14,7 @@ allprojects {
 		}
 	}
 ```
-Step 2. Add the dependency app module build.gradle file.
+Step 2. Add the dependency
 ```
 dependencies {
 	        implementation 'com.github.Baabujiventuress:basispay_android_sdkv2:Tag'
@@ -25,21 +23,17 @@ dependencies {
 
 ## Code Explanation
 
-Step:1
 Make sure you have the below permissions in your manifest file:
 ```
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 ```
-Make sure you have the below imports in your payment activity:
-```
 import com.basispaypg.BasisPayPGConstants;
 import com.basispaypg.BasisPayPaymentInitializer;
 import com.basispaypg.BasisPayPaymentParams;
+
 ```
-Step:2
-```
-        BasisPayPaymentParams pgPaymentParams = new BasisPayPaymentParams();
+ BasisPayPaymentParams pgPaymentParams = new BasisPayPaymentParams();
         pgPaymentParams.setApiKey(Const.PG_API_KEY);//required field(*)
         pgPaymentParams.setSecureHash(Const.PG_SECURE_HASH);//required field(*)
         pgPaymentParams.setOrderReference(Const.PG_REFERENCE);//required field(*)
@@ -62,15 +56,15 @@ Step:2
         pgPaymentParams.setDeliveryCountry(Const.PG_COUNTRY);
    
 ```      
-Initialize the com.basispaypg.BasisPayPaymentInitializer class with payment parameters and initiate the payment:
+Initailize the com.basispaypg.BasisPayPaymentInitializer class with payment parameters and initiate the payment:
 ```
 BasisPayPaymentInitializer pgPaymentInitializer = new BasisPayPaymentInitializer(pgPaymentParams,MainActivity.this,
-                Const.PG_RETURN_URL);
+                Const.PG_RETURN_URL,Const.PG_CONNECT_URL); //Example PG_CONNECT_URL = https://basispay.in/
         pgPaymentInitializer.initiatePaymentProcess();
 
 ```
 ## Payment Response
-To receive the json response, override the onActivityResult() using the REQUEST_CODE and PAYMENT_RESPONSE variables from com.basispaypg.BasisPayPGConstants class
+To receive the json response, override the onActivityResult() using the REQUEST_CODE and PAYMENT_RESPONSE variables from com.basispaypg.BasisPayPaymentParams class
 ```
  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -86,8 +80,7 @@ To receive the json response, override the onActivityResult() using the REQUEST_
                     } else {
                         JSONObject response = new JSONObject(paymentResponse);
                         Log.e("Res", response.toString());
-                        String status = response.getString("status");
-                        String referenceNo = response.getString("payment_response");
+                        String referenceNo = response.getString("referenceNumber");
                         boolean success = response.getBoolean("success");
 
                     }
