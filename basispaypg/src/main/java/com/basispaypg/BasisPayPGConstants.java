@@ -7,9 +7,12 @@ public class BasisPayPGConstants {
     public static String PAYMENT_URL = "PaymentUrl";
     public static String PAYMENT_RETURN_URL = "PaymentReturnUrl";
     public static int REQUEST_CODE = 22222;
-    public static String END_POINT = "checkout";
-    public static String CONTAIN_RES = "ui/response";
-    public static String CONTAIN_CHECK = "ui/response?";
+    public static String END_POINT = "/checkout";
+    public static String CONTAIN_RES = "/ui/response";
+    public static String CONTAIN_CHECK = "/ui/response?";
+    public static String STAGING_URL = "https://staging-connect.basispay.in";
+    public static String PRODUCTION_URL = "https://connect.basispay.in";
+    public static String IS_PRODUCTION = "IsProduction";
 
     public BasisPayPGConstants() {
     }

@@ -59,7 +59,7 @@ import com.basispaypg.BasisPayPaymentParams;
 Initailize the com.basispaypg.BasisPayPaymentInitializer class with payment parameters and initiate the payment:
 ```
 BasisPayPaymentInitializer pgPaymentInitializer = new BasisPayPaymentInitializer(pgPaymentParams,MainActivity.this,
-                Const.PG_RETURN_URL,Const.PG_CONNECT_URL); //Example PG_CONNECT_URL = https://basispay.in/
+                Const.PG_RETURN_URL,false); //LIVE= true or TEST= false
         pgPaymentInitializer.initiatePaymentProcess();
 
 ```
@@ -80,7 +80,7 @@ To receive the json response, override the onActivityResult() using the REQUEST_
                     } else {
                         JSONObject response = new JSONObject(paymentResponse);
                         Log.e("Res", response.toString());
-                        String referenceNo = response.getString("referenceNumber");
+                        String referenceNo = response.getString("referenceNo");
                         boolean success = response.getBoolean("success");
 
                     }

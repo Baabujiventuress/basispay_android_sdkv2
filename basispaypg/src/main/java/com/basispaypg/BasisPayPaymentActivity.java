@@ -42,7 +42,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
         this.pb.setVisibility(View.VISIBLE);
         String postPaymentRequestParams = this.getIntent().getStringExtra(BasisPayPGConstants.POST_PARAMS);
         String returnUrl = this.getIntent().getStringExtra(BasisPayPGConstants.PAYMENT_RETURN_URL);
-        String paymentUrl = this.getIntent().getStringExtra(BasisPayPGConstants.PAYMENT_URL);
+        boolean isProduction = this.getIntent().getBooleanExtra(BasisPayPGConstants.IS_PRODUCTION,false);
 
         try {
             this.webview.setWebViewClient(new WebViewClient() {
@@ -54,8 +54,17 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (url.contains(paymentUrl+BasisPayPGConstants.CONTAIN_CHECK)){
-                                String[] s = url.split(paymentUrl+BasisPayPGConstants.CONTAIN_RES);
+                            String checkUrl;
+                            String appUrl;
+                            if (isProduction) { //TODO LIVE MODE
+                                checkUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.CONTAIN_CHECK;
+                                appUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.CONTAIN_RES;
+                            } else { //TODO TEST MODE
+                                checkUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.CONTAIN_CHECK;
+                                appUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.CONTAIN_RES;
+                            }
+                            if (url.contains(checkUrl)){
+                                String[] s = url.split(appUrl);
                                 Map<String, String> mapValue = getQueryMap(s[1]);
 
                                 referenceNo = mapValue.get("?ref");
@@ -77,7 +86,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                             JSONObject pgResponse = new JSONObject();
                             if (url.equalsIgnoreCase(returnUrl)){
                                 try {
-                                    pgResponse.put("referenceNumber", referenceNo);
+                                    pgResponse.put("referenceNo", referenceNo);
                                     pgResponse.put("success", success);
                                     Intent paymentResponseCallBackIntent = new Intent();
                                     paymentResponseCallBackIntent.putExtra(BasisPayPGConstants.PAYMENT_RESPONSE, pgResponse.toString());
@@ -105,10 +114,19 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                     return super.onJsAlert(view, url, message, result);
                 }
             });
-            String postUrl = paymentUrl+BasisPayPGConstants.END_POINT;
-            Log.d("postUrl", postUrl);
+            String postUrl;
+            if (isProduction) {
+                //TODO LIVE MODE
+                postUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.END_POINT;
+                Log.d("Production PostUrl", postUrl);
+            } else {
+                //TODO TEST MODE
+                postUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.END_POINT;
+                Log.d("Staging PostUrl", postUrl);
+            }
             Log.d("postParamValues", postPaymentRequestParams);
             this.webview.postUrl(postUrl, postPaymentRequestParams.getBytes());
+
         } catch (Exception var7) {
             StringWriter sw = new StringWriter();
             var7.printStackTrace(new PrintWriter(sw));

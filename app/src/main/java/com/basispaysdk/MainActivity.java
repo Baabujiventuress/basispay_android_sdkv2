@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         pgPaymentParams.setDeliveryCountry(Const.PG_COUNTRY);
 
         BasisPayPaymentInitializer pgPaymentInitializer = new BasisPayPaymentInitializer(pgPaymentParams,MainActivity.this,
-                Const.PG_RETURN_URL,Const.PG_CONNECT_URL); //Example PG_CONNECT_URL = https://basispay.in/
+                Const.PG_RETURN_URL,false); //LIVE= true or TEST= false
         pgPaymentInitializer.initiatePaymentProcess();
 
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         JSONObject response = new JSONObject(paymentResponse);
                         Log.e("Res", response.toString());
-                        String referenceNo = response.getString("referenceNumber");
+                        String referenceNo = response.getString("referenceNo");
                         boolean success = response.getBoolean("success");
 
                     }
