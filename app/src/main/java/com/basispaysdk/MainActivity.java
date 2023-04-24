@@ -60,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String paymentResponse = data.getStringExtra(BasisPayPGConstants.PAYMENT_RESPONSE);
                     System.out.println(paymentResponse);
-                    Log.e("Res",paymentResponse);
+                    Log.d("Res",paymentResponse);
                     if (paymentResponse.equals("null")) {
                         Toast.makeText(this, "Transaction Error!", Toast.LENGTH_SHORT).show();
                     } else {
                         JSONObject response = new JSONObject(paymentResponse);
-                        Log.e("Res", response.toString());
+                        Log.d("Res", response.toString());
                         String referenceNo = response.getString("referenceNo");
                         boolean success = response.getBoolean("success");
 
