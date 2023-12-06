@@ -3,11 +3,13 @@ package com.basispaypg;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JsResult;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -100,6 +102,12 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
 
                         }
                     });
+                }
+
+                @Override
+                public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                    handler.proceed();
+                    super.onReceivedSslError(view, handler, error);
                 }
             });
             WebSettings webSettings = this.webview.getSettings();
