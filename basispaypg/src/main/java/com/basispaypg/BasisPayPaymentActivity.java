@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -80,7 +81,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
 
                 public void onPageStarted(WebView view, String url, Bitmap facIcon) {
                     super.onPageStarted(view, url, facIcon);
-                    pb.setVisibility(View.VISIBLE);
+                    pb.setVisibility(View.GONE);
                     Log.i("log", "onPageStarted : " + url);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -108,6 +109,22 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                 public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                     handler.proceed();
                     super.onReceivedSslError(view, handler, error);
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    String url = request.getUrl().toString();
+                    if (url.startsWith("http://")) {
+                        try {
+                            //change protocol of url string
+                            url = url.replace("http://","https://");
+                            view.loadUrl(url);
+                            return super.shouldOverrideUrlLoading(view, request);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return false;
                 }
             });
             WebSettings webSettings = this.webview.getSettings();
