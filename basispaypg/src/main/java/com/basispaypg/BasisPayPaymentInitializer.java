@@ -26,11 +26,11 @@ public class BasisPayPaymentInitializer {
 
         if (TextUtils.isEmpty(paymentParams.getApiKey())) {
             throw new RuntimeException("ApiKey missing");
-        }else {
+        } else {
             this.params.put("apiKey", paymentParams.getApiKey());
             if (TextUtils.isEmpty(paymentParams.getSecureHash())) {
                 throw new RuntimeException("SecureHash missing");
-            }else {
+            } else {
                 this.params.put("secureHash", paymentParams.getSecureHash());
                 if (TextUtils.isEmpty(paymentParams.getOrderReference())) {
                     throw new RuntimeException("Order Reference missing");
@@ -64,51 +64,47 @@ public class BasisPayPaymentInitializer {
                                                 throw new RuntimeException("region missing");
                                             } else {
                                                 this.params.put("region", paymentParams.getRegion());
-                                                if (TextUtils.isEmpty(paymentParams.getCity())) {
-                                                    throw new RuntimeException("City missing");
+                                                if (TextUtils.isEmpty(paymentParams.getCountry())) {
+                                                    throw new RuntimeException("country missing");
                                                 } else {
-                                                    this.params.put("city", paymentParams.getCity());
-                                                    if (TextUtils.isEmpty(paymentParams.getCountry())) {
-                                                        throw new RuntimeException("country missing");
-                                                    } else {
-                                                        this.params.put("country", paymentParams.getCountry());
-                                                        if (paymentParams.getDeliveryAddress() != null) {
-                                                            this.params.put("deliveryAddress", paymentParams.getDeliveryAddress());
-                                                            if (paymentParams.getDeliveryCustomerName() != null) {
-                                                                this.params.put("deliveryName", paymentParams.getDeliveryCustomerName());
-                                                                if (paymentParams.getDeliveryCustomerMobile() != null) {
-                                                                    this.params.put("deliveryMobile", paymentParams.getDeliveryCustomerMobile());
-                                                                    if (paymentParams.getDeliveryPostalCode() != null) {
-                                                                        this.params.put("deliveryPostalCode", paymentParams.getDeliveryPostalCode());
-                                                                        if (paymentParams.getDeliveryCity() != null) {
-                                                                            this.params.put("deliveryCity", paymentParams.getDeliveryCity());
-                                                                            if (paymentParams.getDeliveryRegion() != null) {
-                                                                                this.params.put("deliveryRegion", paymentParams.getDeliveryRegion());
-                                                                                if (paymentParams.getDeliveryCountry() != null) {
-                                                                                    this.params.put("deliveryCountry", paymentParams.getDeliveryCountry());
-                                                                                } else {
-                                                                                    throw new RuntimeException("delivery country missing");
-                                                                                }
+                                                    this.params.put("country", paymentParams.getCountry());
+                                                    if (paymentParams.getDeliveryAddress() != null) {
+                                                        this.params.put("deliveryAddress", paymentParams.getDeliveryAddress());
+                                                        if (paymentParams.getDeliveryCustomerName() != null) {
+                                                            this.params.put("deliveryName", paymentParams.getDeliveryCustomerName());
+                                                            if (paymentParams.getDeliveryCustomerMobile() != null) {
+                                                                this.params.put("deliveryMobile", paymentParams.getDeliveryCustomerMobile());
+                                                                if (paymentParams.getDeliveryPostalCode() != null) {
+                                                                    this.params.put("deliveryPostalCode", paymentParams.getDeliveryPostalCode());
+                                                                    if (paymentParams.getDeliveryCity() != null) {
+                                                                        this.params.put("deliveryCity", paymentParams.getDeliveryCity());
+                                                                        if (paymentParams.getDeliveryRegion() != null) {
+                                                                            this.params.put("deliveryRegion", paymentParams.getDeliveryRegion());
+                                                                            if (paymentParams.getDeliveryCountry() != null) {
+                                                                                this.params.put("deliveryCountry", paymentParams.getDeliveryCountry());
                                                                             } else {
-                                                                                throw new RuntimeException("delivery region missing");
+                                                                                throw new RuntimeException("delivery country missing");
                                                                             }
                                                                         } else {
-                                                                            throw new RuntimeException("delivery city missing");
+                                                                            throw new RuntimeException("delivery region missing");
                                                                         }
                                                                     } else {
-                                                                        throw new RuntimeException("delivery postalCode missing");
+                                                                        throw new RuntimeException("delivery city missing");
                                                                     }
-
                                                                 } else {
-                                                                    throw new RuntimeException("delivery customerMobile missing");
+                                                                    throw new RuntimeException("delivery postalCode missing");
                                                                 }
-                                                            } else {
-                                                                throw new RuntimeException("delivery customerName missing");
-                                                            }
 
+                                                            } else {
+                                                                throw new RuntimeException("delivery customerMobile missing");
+                                                            }
+                                                        } else {
+                                                            throw new RuntimeException("delivery customerName missing");
                                                         }
+
                                                     }
                                                 }
+
                                             }
                                         }
                                     }
@@ -144,9 +140,9 @@ public class BasisPayPaymentInitializer {
 
         // Display the TreeMap which is naturally sorted
         try {
-            for(Iterator var3 = sorted.keySet().iterator(); var3.hasNext(); hashPostParamsBuilder = hashPostParamsBuilder.append(parameterEntry)) {
-                String key = (String)var3.next();
-                parameterEntry = key + "=" + (String)sorted.get(key) + "&";
+            for (Iterator var3 = sorted.keySet().iterator(); var3.hasNext(); hashPostParamsBuilder = hashPostParamsBuilder.append(parameterEntry)) {
+                String key = (String) var3.next();
+                parameterEntry = key + "=" + (String) sorted.get(key) + "&";
             }
         } catch (Exception var6) {
             StringWriter sw = new StringWriter();

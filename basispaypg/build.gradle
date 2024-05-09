@@ -1,11 +1,9 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
 }
 
 android {
     compileSdk 33
-    buildToolsVersion '32.0.0'
 
     defaultConfig {
         minSdkVersion 21
@@ -34,17 +32,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-//                from components.release
-                groupId = 'com.github.Baabujiventuress' //your git id
-                artifactId = 'basispay_android_sdkv2' //your-repository
-                version = '1.2.2' // As same as the Tag
-            }
-        }
-    }
 }

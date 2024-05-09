@@ -1,6 +1,8 @@
 package com.basispaypg;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -107,8 +109,50 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
 
                 @Override
                 public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                    handler.proceed();
-                    super.onReceivedSslError(view, handler, error);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(BasisPayPaymentActivity.this);
+                    String message;
+                    switch (error.getPrimaryError()) {
+                        case SslError.SSL_EXPIRED:
+                            message = "The certificate has expired.";
+                            break;
+                        case SslError.SSL_IDMISMATCH:
+                            message = "The certificate Hostname mismatch.";
+                            break;
+                        case SslError.SSL_UNTRUSTED:
+                            message = "The certificate authority is not trusted.";
+                            break;
+                        case SslError.SSL_DATE_INVALID:
+                            message = "The certificate date is invalid.";
+                            break;
+                        case SslError.SSL_NOTYETVALID:
+                            message = "The certificate is not yet valid.";
+                            break;
+                        default:
+                            message = "Unknown SSL error.";
+                            break;
+                    }
+
+                    builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            handler.proceed();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            handler.cancel();
+                            //Cancel Transaction
+                            cancelTransaction();
+                        }
+                    });
+                    message += " Do you want to continue anyway?";
+                    builder.setTitle("Transaction Alert");
+                    builder.setMessage("Do you want to proceed transaction?");
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
 
                 @Override
@@ -200,5 +244,19 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
             map.put(name, value);
         }
         return map;
+    }
+
+    public void cancelTransaction() {
+        try {
+            JSONObject pgResponse = new JSONObject();
+            pgResponse.put("referenceNo", "TRANSACTION CANCELLED!");
+            pgResponse.put("success", "false");
+            Intent paymentResponseCallBackIntent = new Intent();
+            paymentResponseCallBackIntent.putExtra(BasisPayPGConstants.PAYMENT_RESPONSE, pgResponse.toString());
+            setResult(-1, paymentResponseCallBackIntent);
+            finish();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
