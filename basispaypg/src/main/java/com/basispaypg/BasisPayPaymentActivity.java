@@ -30,6 +30,10 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Devops Team Vinoth
+ * Published By BasisPay PG Version2
+ */
 public class BasisPayPaymentActivity extends AppCompatActivity {
     ProgressBar pb;
     WebView webview;
