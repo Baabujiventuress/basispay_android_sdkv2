@@ -2,9 +2,11 @@ package com.basispaypg;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +39,7 @@ import java.util.Map;
 public class BasisPayPaymentActivity extends AppCompatActivity {
     ProgressBar pb;
     WebView webview;
-    String referenceNo,success;
+    String referenceNo, success;
 
     public BasisPayPaymentActivity() {
     }
@@ -51,7 +53,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
         this.pb.setVisibility(View.VISIBLE);
         String postPaymentRequestParams = this.getIntent().getStringExtra(BasisPayPGConstants.POST_PARAMS);
         String returnUrl = this.getIntent().getStringExtra(BasisPayPGConstants.PAYMENT_RETURN_URL);
-        boolean isProduction = this.getIntent().getBooleanExtra(BasisPayPGConstants.IS_PRODUCTION,false);
+        boolean isProduction = this.getIntent().getBooleanExtra(BasisPayPGConstants.IS_PRODUCTION, false);
 
         try {
             this.webview.setWebViewClient(new WebViewClient() {
@@ -66,13 +68,13 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                             String checkUrl;
                             String appUrl;
                             if (isProduction) { //TODO LIVE MODE
-                                checkUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.CONTAIN_CHECK;
-                                appUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.CONTAIN_RES;
+                                checkUrl = BasisPayPGConstants.PRODUCTION_URL + BasisPayPGConstants.CONTAIN_CHECK;
+                                appUrl = BasisPayPGConstants.PRODUCTION_URL + BasisPayPGConstants.CONTAIN_RES;
                             } else { //TODO TEST MODE
-                                checkUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.CONTAIN_CHECK;
-                                appUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.CONTAIN_RES;
+                                checkUrl = BasisPayPGConstants.STAGING_URL + BasisPayPGConstants.CONTAIN_CHECK;
+                                appUrl = BasisPayPGConstants.STAGING_URL + BasisPayPGConstants.CONTAIN_RES;
                             }
-                            if (url.contains(checkUrl)){
+                            if (url.contains(checkUrl)) {
                                 String[] s = url.split(appUrl);
                                 Map<String, String> mapValue = getQueryMap(s[1]);
 
@@ -93,7 +95,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             JSONObject pgResponse = new JSONObject();
-                            if (url.equalsIgnoreCase(returnUrl)){
+                            if (url.equalsIgnoreCase(returnUrl)) {
                                 try {
                                     pgResponse.put("referenceNo", referenceNo);
                                     pgResponse.put("success", success);
@@ -165,11 +167,47 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
                     if (url.startsWith("http://")) {
                         try {
                             //change protocol of url string
-                            url = url.replace("http://","https://");
+                            url = url.replace("http://", "https://");
                             view.loadUrl(url);
                             return super.shouldOverrideUrlLoading(view, request);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.d("TAG", e.toString());
+                        }
+                    }
+                    if (url.startsWith("upi:")) {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+                            return true;
+                        } catch (ActivityNotFoundException e) {
+                            e.printStackTrace();
+                            Log.d("TAG", e.toString());
+                            Toast.makeText(BasisPayPaymentActivity.this,
+                                    "UPI app were not found!", Toast.LENGTH_SHORT).show();
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(BasisPayPaymentActivity.this);
+                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    //Cancel Transaction
+                                    cancelTransaction();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    //Cancel Transaction
+                                    cancelTransaction();
+                                }
+                            });
+                            builder.setTitle("Alert");
+                            builder.setMessage("UPI apps were not found this device! Do you want to cancel transaction?");
+                            final AlertDialog dialog = builder.create();
+                            dialog.setCancelable(false);
+                            dialog.show();
                         }
                     }
                     return false;
@@ -190,11 +228,11 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
             String postUrl;
             if (isProduction) {
                 //TODO LIVE MODE
-                postUrl = BasisPayPGConstants.PRODUCTION_URL+BasisPayPGConstants.END_POINT;
+                postUrl = BasisPayPGConstants.PRODUCTION_URL + BasisPayPGConstants.END_POINT;
                 Log.d("Production PostUrl", postUrl);
             } else {
                 //TODO TEST MODE
-                postUrl = BasisPayPGConstants.STAGING_URL+BasisPayPGConstants.END_POINT;
+                postUrl = BasisPayPGConstants.STAGING_URL + BasisPayPGConstants.END_POINT;
                 Log.d("Staging PostUrl", postUrl);
             }
             Log.d("postParamValues", postPaymentRequestParams);
@@ -212,7 +250,7 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == 0) {
-            switch(keyCode) {
+            switch (keyCode) {
                 case 4:
                     if (this.webview.canGoBack()) {
                         this.webview.goBack();
@@ -260,6 +298,8 @@ public class BasisPayPaymentActivity extends AppCompatActivity {
             setResult(-1, paymentResponseCallBackIntent);
             finish();
         } catch (Exception ex) {
+            ex.printStackTrace();
+            Log.d("TAG:", ex.toString());
             System.out.println(ex.getMessage());
         }
     }

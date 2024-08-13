@@ -82,42 +82,24 @@ public class BasisPayPaymentInitializer {
                                                                             this.params.put("deliveryRegion", paymentParams.getDeliveryRegion());
                                                                             if (paymentParams.getDeliveryCountry() != null) {
                                                                                 this.params.put("deliveryCountry", paymentParams.getDeliveryCountry());
-                                                                            } else {
-                                                                                throw new RuntimeException("delivery country missing");
                                                                             }
-                                                                        } else {
-                                                                            throw new RuntimeException("delivery region missing");
                                                                         }
-                                                                    } else {
-                                                                        throw new RuntimeException("delivery city missing");
                                                                     }
-                                                                } else {
-                                                                    throw new RuntimeException("delivery postalCode missing");
                                                                 }
-
-                                                            } else {
-                                                                throw new RuntimeException("delivery customerMobile missing");
                                                             }
-                                                        } else {
-                                                            throw new RuntimeException("delivery customerName missing");
                                                         }
-
                                                     }
                                                 }
-
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-
                     }
-
                 }
             }
         }
-
     }
 
     public void initiatePaymentProcess() {
