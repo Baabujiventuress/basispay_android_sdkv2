@@ -14,6 +14,8 @@ public class BasisPayPaymentParams {
     private String city;
     private String region;
     private String country;
+    private String paymentMethod;
+    private String paymentMode;
 
     private String deliveryAddress;
     private String deliveryCustomerName;
@@ -169,6 +171,22 @@ public class BasisPayPaymentParams {
 
     public void setDeliveryCountry(String deliveryCountry) {
         this.deliveryCountry = deliveryCountry;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 }
 

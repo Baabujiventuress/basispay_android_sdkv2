@@ -68,6 +68,12 @@ public class BasisPayPaymentInitializer {
                                                     throw new RuntimeException("country missing");
                                                 } else {
                                                     this.params.put("country", paymentParams.getCountry());
+                                                    if (paymentParams.getPaymentMethod() != null) {
+                                                        this.params.put("paymentMethod", paymentParams.getPaymentMethod());
+                                                    }
+                                                    if (paymentParams.getPaymentMode() != null) {
+                                                        this.params.put("paymentMode", paymentParams.getPaymentMode());
+                                                    }
                                                     if (paymentParams.getDeliveryAddress() != null) {
                                                         this.params.put("deliveryAddress", paymentParams.getDeliveryAddress());
                                                         if (paymentParams.getDeliveryCustomerName() != null) {

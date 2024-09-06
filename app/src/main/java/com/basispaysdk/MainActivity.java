@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         pgPaymentParams.setCity(Const.PG_CITY);//required field(*)
         pgPaymentParams.setRegion(Const.PG_REGION);//required field(*)
         pgPaymentParams.setCountry(Const.PG_COUNTRY);//required field(*)
+        pgPaymentParams.setPaymentMode("");
+        pgPaymentParams.setPaymentMode("");
 
         //// optional parameters
         pgPaymentParams.setDeliveryAddress("");
